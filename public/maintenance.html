@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>技术碎笔 - 备案维护中</title>
     <style>
-      /*! tailwindcss v3.4.10 | MIT License | https://tailwindcss.com */
       *,
       :before,
       :after {
@@ -17,7 +16,11 @@
       body {
         margin: 0;
         padding: 0;
-        font-family: sans-serif;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+          "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
       .flex {
         display: flex;
@@ -36,10 +39,6 @@
       }
       .p-5 {
         padding: 1.25rem;
-      }
-      .font-sans {
-        font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-          "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji";
       }
       .max-w-2xl {
         max-width: 42rem;
@@ -86,14 +85,14 @@
       .mb-8 {
         margin-bottom: 2rem;
       }
-      .bg-blue-50 {
-        background-color: #eff6ff;
+      .bg-indigo-50 {
+        background-color: #eef2ff;
       }
       .border-l-4 {
         border-left-width: 4px;
       }
-      .border-blue-500 {
-        border-color: #3b82f6;
+      .border-indigo-500 {
+        border-color: #6366f1;
       }
       .p-6 {
         padding: 1.5rem;
@@ -104,31 +103,6 @@
       .my-8 {
         margin-top: 2rem;
         margin-bottom: 2rem;
-      }
-      .space-x-2 > :not([hidden]) ~ :not([hidden]) {
-        --tw-space-x-reverse: 0;
-        margin-right: calc(0.5rem * var(--tw-space-x-reverse));
-        margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
-      }
-      .font-medium {
-        font-weight: 500;
-      }
-      .text-gray-700 {
-        color: #374151;
-      }
-      .text-blue-600 {
-        color: #2563eb;
-      }
-      .hover\:text-blue-800:hover {
-        color: #1e40af;
-      }
-      .transition-colors {
-        transition-property: color, background-color, border-color, fill, stroke;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 0.15s;
-      }
-      .duration-200 {
-        transition-duration: 0.2s;
       }
       .mt-8 {
         margin-top: 2rem;
@@ -142,46 +116,19 @@
       .border-gray-200 {
         border-color: #e5e7eb;
       }
-      .text-indigo-600 {
-        color: #4f46e5;
-      }
-      .bg-indigo-50 {
-        background-color: #eef2ff;
-      }
-      .border-indigo-500 {
-        border-color: #6366f1;
-      }
     </style>
   </head>
   <body>
-    <div
-      class="flex justify-center items-center min-h-screen bg-gray-100 p-5 font-sans"
-    >
+    <div class="flex justify-center items-center min-h-screen bg-gray-100 p-5">
       <div
         class="max-w-2xl w-full bg-white rounded-lg shadow-lg p-8 text-center"
       >
         <h1 class="text-3xl font-semibold text-gray-800 mb-6">技术碎笔</h1>
-        <div class="text-lg text-gray-600 mb-8">
-          <p class="mb-2">网站正在进行ICP备案审核</p>
-          <p>暂时无法访问，敬请谅解</p>
-        </div>
         <div
-          class="bg-indigo-50 border-l-4 border-indigo-500 p-6 rounded-md my-8"
+          class="bg-indigo-50 border-l-4 border-indigo-500 p-6 rounded-md my-8 text-lg text-gray-600 mb-8"
         >
-          <div class="flex justify-center items-center space-x-2 mb-4">
-            <span class="font-medium text-gray-700">预计恢复时间：</span>
-            <span class="text-indigo-600">2025年8月30日</span>
-          </div>
-          <div class="flex justify-center items-center space-x-2">
-            <span class="font-medium text-gray-700">联系邮箱：</span>
-            <a
-              href="mailto:your-email@example.com"
-              class="text-indigo-600 hover:text-indigo-800 transition-colors duration-200"
-              aria-label="联系网站管理员"
-            >
-              15615604230@163.com
-            </a>
-          </div>
+          <div>网站正在进行ICP备案审核</div>
+          <div>暂时无法访问，敬请谅解</div>
         </div>
         <div class="mt-8 pt-6 border-t border-gray-200">
           <p class="text-gray-600 mb-2">技术碎笔是一个个人学习项目</p>
