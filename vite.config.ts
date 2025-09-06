@@ -16,4 +16,15 @@ export default defineConfig({
       deleteOriginFile: false, // 压缩后是否删除压缩源文件
     }),
   ],
+  resolve: {
+    alias: {
+      "@": "/src",
+    },
+  },
+  server: {
+    host: "0.0.0.0",
+    port: 5020,
+    hmr: true,
+    open: false,
+  },
 });
