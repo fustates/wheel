@@ -1,46 +1,122 @@
-name: React CI/CD to Tencent Cloud
+# =============================================================================
+# GitHub Actions 工作流：React 项目自动构建（测试版）
+# =============================================================================
+# 功能说明：
+#   1. 代码推送至 main 分支时自动触发
+#   2. 使用最新 Node.js + 最新 pnpm 安装依赖并构建
+#   3. ✅ 暂不包含部署步骤，先验证构建流程是否成功
+# =============================================================================
 
-# 触发条件：当向 main 分支推送代码时触发（可根据实际分支名修改，如 master）
+name: React CI/CD - Build Only
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 【触发条件】当向 main 分支推送代码时自动执行
+# 如需修改分支，请将 main 改为 master 或其他分支名
+# ─────────────────────────────────────────────────────────────────────────────
 on:
   push:
     branches:
       - main
 
-# 定义任务
+# ─────────────────────────────────────────────────────────────────────────────
+# 【任务定义】
+# ─────────────────────────────────────────────────────────────────────────────
 jobs:
-  build-and-deploy:
-    # 运行环境：使用最新的 Ubuntu 系统
+  build:
+    # 运行环境：使用 GitHub 托管的最新 Ubuntu 系统
     runs-on: ubuntu-latest
 
     steps:
-      # 检出代码
-      # 将 GitHub 仓库的代码下载到运行器中
-      - name: Checkout Repository
-        uses: actions/checkout@v6
+      # ───────────────────────────────────────────────────────────────────────
+      # 步骤 1️⃣：检出代码
+      # 将 GitHub 仓库的源代码下载到 CI 运行环境中
+      # ───────────────────────────────────────────────────────────────────────
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v4
 
-      # 设置 Node.js 环境
-      # 使用最新的 Node.js 版本，并配置 pnpm 作为包管理器
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      # ───────────────────────────────────────────────────────────────────────
+      # 步骤 2️⃣：安装最新 Node.js 环境
+      # ⚠️ 注意：setup-node 不支持 package-manager 参数，请勿添加！
+      # cache: 'pnpm' 仅用于缓存 node_modules，加速依赖安装，不会自动安装 pnpm
+      # ───────────────────────────────────────────────────────────────────────
+      - name: 🟢 Setup Node.js (Latest)
+        uses: actions/setup-node@v4
         with:
-          node-version: 'latest' # 使用最新 Node 版本，生产环境建议指定具体 LTS 版本如 '20'
-          package-manager: 'pnpm' # 启用 pnpm 支持
-          cache: 'pnpm' # 开启 pnpm 缓存，加速依赖安装
+          node-version: 'latest'  # ✅ 使用最新 Node.js 版本
+          cache: 'pnpm'           # ✅ 启用 pnpm 依赖缓存，加速后续构建
 
-      # 安装 pnpm 包管理器
-      # 使用官方 pnpm-setup action（推荐）
-      - name: Setup pnpm
+      # ───────────────────────────────────────────────────────────────────────
+      # 步骤 3️⃣：安装最新 pnpm 包管理器（❗关键步骤，必须单独执行）
+      # GitHub 环境默认不包含 pnpm，必须通过官方 action 显式安装
+      # ───────────────────────────────────────────────────────────────────────
+      - name: 🔧 Setup pnpm (Latest)
         uses: pnpm/action-setup@v4
         with:
-          version: 'latest'  # 指定 pnpm 版本，或使用 'latest'
+          version: 'latest'  # ✅ 安装最新 pnpm 版本
 
-      # 安装依赖
-      # 使用 pnpm 安装项目依赖
-      - name: Install Dependencies
+      # ───────────────────────────────────────────────────────────────────────
+      # 步骤 4️⃣：验证环境（可选，方便排查问题）
+      # 输出 Node/pnpm 版本及路径，确认环境配置正确
+      # ───────────────────────────────────────────────────────────────────────
+      - name: 🔍 Verify Environment
+        run: |
+          echo "✅ Node version: $(node -v)"
+          echo "✅ PNPM version: $(pnpm -v)"
+          echo "✅ PNPM path: $(which pnpm)"
+
+      # ───────────────────────────────────────────────────────────────────────
+      # 步骤 5️⃣：安装项目依赖
+      # 使用 pnpm 安装 package.json 中声明的所有依赖包
+      # 首次运行会下载依赖，后续会命中 cache 缓存加速
+      # ───────────────────────────────────────────────────────────────────────
+      - name: 📥 Install Dependencies
         run: pnpm install
 
-      # 构建项目
-      # 执行构建命令，生成 dist 或 build 目录
-      - name: Build Project
+      # ───────────────────────────────────────────────────────────────────────
+      # 步骤 6️⃣：构建 React 项目
+      # 执行 pnpm run build，生成静态文件（dist 或 build 目录）
+      # ⚠️ 请根据项目实际配置确认输出目录：
+      #   • Vite 项目 → dist/
+      #   • Create React App → build/
+      # ───────────────────────────────────────────────────────────────────────
+      - name: 🏗️ Build Project
         run: pnpm run build
-        # 注意：如果您的构建输出目录是 'build' 而不是 'dist'，请相应修改后续步骤中的路径
+
+      # ───────────────────────────────────────────────────────────────────────
+      # 步骤 7️⃣：检查构建产物（必选，构建失败时快速定位）
+      # 确认输出目录存在，并列出文件详情
+      # ───────────────────────────────────────────────────────────────────────
+      - name: ✅ Check Build Output
+        run: |
+          echo "🔍 Checking build output directory..."
+          
+          if [ -d "dist" ]; then
+            echo "✅ Build success: dist/ directory found (Vite)"
+            echo "📦 Build output size:"
+            du -sh dist/
+            echo "📄 File list:"
+            ls -la dist/
+          elif [ -d "build" ]; then
+            echo "✅ Build success: build/ directory found (Create React App)"
+            echo "📦 Build output size:"
+            du -sh build/
+            echo "📄 File list:"
+            ls -la build/
+          else
+            echo "❌ Build failed: No dist/ or build/ directory found"
+            echo "🔍 Current directory structure:"
+            ls -la
+            exit 1
+          fi
+
+      # ───────────────────────────────────────────────────────────────────────
+      # 步骤 8️⃣：上传构建产物（可选，方便下载查看）
+      # 将构建生成的文件作为 Artifact 保存，可在 Actions 页面下载
+      # ───────────────────────────────────────────────────────────────────────
+      - name: 📤 Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output          # Artifact 名称，可在 Actions 页面下载
+          path: dist/                 # ⚠️ CRA 项目改为 build/
+          retention-days: 7           # 保留 7 天，过期自动删除
+          if-no-files-found: error    # 如果没有文件则报错
