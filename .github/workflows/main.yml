@@ -43,7 +43,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'latest'  # ✅ 使用最新 Node.js 版本
-          cache: 'pnpm'           # ✅ 启用 pnpm 依赖缓存，加速后续构建
+      #    cache: 'pnpm'           # ✅ 启用 pnpm 依赖缓存，加速后续构建
 
       # ───────────────────────────────────────────────────────────────────────
       # 步骤 3️⃣：安装最新 pnpm 包管理器（❗关键步骤，必须单独执行）
@@ -52,7 +52,7 @@ jobs:
       - name: 🔧 Setup pnpm (Latest)
         uses: pnpm/action-setup@v4
         with:
-          version: 10  # ✅ 安装最新 pnpm 版本
+          version: 'latest'  # ✅ 安装最新 pnpm 版本
 
       # ───────────────────────────────────────────────────────────────────────
       # 步骤 4️⃣：验证环境（可选，方便排查问题）
