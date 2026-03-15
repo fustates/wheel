@@ -8,23 +8,25 @@ const AboutPage = lazy(() => import("@/view/about/index"));
 
 const NotFoundPage = lazy(() => import("@/view/error/404"));
 
+const base = process.env.GITHUB_ACTIONS === "true" ? "/wheel/" : "/";
+
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: base,
     element: <Layout />,
     children: [
       {
-        path: "/",
+        path: base,
         element: <HomePage />,
       },
       {
-        path: "/about",
+        path: `${base}about`,
         element: <AboutPage />,
       },
     ],
   },
   {
-    path: "*",
+    path: `${base}*`,
     element: <NotFoundPage />,
   },
 ]);
