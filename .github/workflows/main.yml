@@ -50,6 +50,9 @@ jobs:
       - name: 📦 Checkout Repository
         uses: actions/checkout@v4
 
+      - name: 🔍 Print Current Directory
+        run: pwd
+
       # ───────────────────────────────────────────────────────────────────────
       # 步骤 3️⃣：安装最新 pnpm 包管理器（❗关键步骤，必须单独执行）
       # GitHub 环境默认不包含 pnpm，必须通过官方 action 显式安装
