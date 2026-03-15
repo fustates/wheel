@@ -134,10 +134,5 @@ jobs:
       - name: 构建 docker 镜像 并推送到 docker hub
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: Dockerfile
-          tags: ${{ secrets.DOCKER_USERNAME }}/wheel:latest
           push: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          cache-to: type=local,dest=./cache
+          tags: ${{ secrets.DOCKER_USERNAME }}/wheel:latest
