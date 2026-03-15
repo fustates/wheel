@@ -34,22 +34,18 @@ jobs:
 
     steps:
       # ───────────────────────────────────────────────────────────────────────
-      # 步骤 1️⃣：检出代码
-      # 将 GitHub 仓库的源代码下载到 CI 运行环境中
-      # ───────────────────────────────────────────────────────────────────────
-      - name: 📦 Checkout Repository
-        uses: actions/checkout@v4
-
-      # ───────────────────────────────────────────────────────────────────────
-      # 步骤 2️⃣：安装最新 Node.js 环境
-      # ⚠️ 注意：setup-node 不支持 package-manager 参数，请勿添加！
-      # cache: 'pnpm' 仅用于缓存 node_modules，加速依赖安装，不会自动安装 pnpm
+      # 步骤 1️⃣：安装 Node.js（第一步，优先安装运行环境）
       # ───────────────────────────────────────────────────────────────────────
       - name: 🟢 Setup Node.js (Latest)
         uses: actions/setup-node@v4
         with:
-          node-version: "latest" # ✅ 使用最新 Node.js 版本
-      #    cache: 'pnpm'           # ✅ 启用 pnpm 依赖缓存，加速后续构建
+          node-version: "latest"
+
+      # ───────────────────────────────────────────────────────────────────────
+      # 步骤 2️⃣：检出代码
+      # ───────────────────────────────────────────────────────────────────────
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v4
 
       # ───────────────────────────────────────────────────────────────────────
       # 步骤 3️⃣：安装最新 pnpm 包管理器（❗关键步骤，必须单独执行）
@@ -95,7 +91,7 @@ jobs:
       - name: ✅ Check Build Output
         run: |
           echo "🔍 Checking build output directory..."
-          
+
           if [ -d "dist" ]; then
             echo "✅ Build success: dist/ directory found (Vite)"
             echo "📦 Build output size:"
