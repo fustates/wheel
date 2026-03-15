@@ -8,25 +8,28 @@ const AboutPage = lazy(() => import("@/view/about/index"));
 
 const NotFoundPage = lazy(() => import("@/view/error/404"));
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      {
-        path: "/",
-        element: <HomePage />,
-      },
-      {
-        path: "/about",
-        element: <AboutPage />,
-      },
-    ],
-  },
-  {
-    path: "*",
-    element: <NotFoundPage />,
-  },
-]);
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <Layout />,
+      children: [
+        {
+          path: "/",
+          element: <HomePage />,
+        },
+        {
+          path: "/about",
+          element: <AboutPage />,
+        },
+      ],
+    },
+    {
+      path: "*",
+      element: <NotFoundPage />,
+    },
+  ],
+  { basename: import.meta.env.BASE_URL },
+);
 
 export default router;
