@@ -1,8 +1,8 @@
 {
   "redirects": [
     {
-      "source": "$wwwhost",
-      "destination": "$host",
+      "source": "www.fuchron.com",
+      "destination": "fuchron.com",
       "statusCode": 301
     }
   ],
