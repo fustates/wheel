@@ -1,8 +1,8 @@
 {
   "redirects": [
     {
-      "source": "$host",
-      "destination": "$wwwhost",
+      "source": "$wwwhost",
+      "destination": "$host",
       "statusCode": 301
     }
   ],
